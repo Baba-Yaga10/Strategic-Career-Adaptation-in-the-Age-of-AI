@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Strategic Career Adaptation in the Age of AI</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,700;0,9..144,900;1,9..144,600&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <!-- Fonts for the teammate's dashboard appended below (IBM Plex family) -->
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="index.css">
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/d3-sankey@0.12.3/dist/d3-sankey.min.js"></script>
+</head>
+<body>
+
+  <header class="main-header">
+    <div class="header-badge">AI Impact Report &middot; Bangladesh 2026</div>
+    <h1>Strategic Career Adaptation<br><em>in the Age of AI</em></h1>
+    <p class="project-subtitle">A Data Story on AI Awareness, Career Anxiety &amp; Automation Risk Among Bangladeshi University Students</p>
+    <p class="header-sub">Two journeys, one question &mdash; how AI awareness, career anxiety, employer-demanded skills and automation risk steer the way university students plan their careers.</p>
+  </header>
+
+  <!-- RESEARCH QUESTION BANNER -->
+  <section class="rq-banner" id="rq-banner">
+    <span class="rq-eyebrow">Research Question</span>
+    <p class="rq-text">How do AI awareness, career anxiety, employer-demanded skills, and automation risk collectively influence strategic career adaptation among university students in Bangladesh?</p>
+    <div class="rq-underline"></div>
+  </section>
+
+  <!-- SECTION 1: HAND-DRIVEN MINDSET RIVER -->
+  <section class="story-card" id="section-mindset">
+    <div class="card-header">
+      <span class="step-icon">✋</span>
+      <div>
+        <h2>The Mindset River</h2>
+        <p class="subtitle">Touch a finger to trace how AI knowledge among Bangladeshi students flows into career anxiety, cohort by cohort</p>
+      </div>
+    </div>
+
+    <div class="vis-layout">
+      <div class="interactive-panel" id="hand-panel">
+        <h3>Cohort Selector</h3>
+        <p class="panel-hint">Tap a finger for a year &middot; tap the palm for everyone</p>
+        <svg id="hand-svg" viewBox="0 0 180 200"></svg>
+        <div id="cohort-tag" class="active-tag">Reading: All Students</div>
+      </div>
+
+      <div class="canvas-wrap">
+        <div id="vis1-chart" class="chart-canvas"></div>
+        <div class="legend-row" id="anxiety-legend"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 2: TRAIN-DRIVEN CAREER EXPRESS -->
+  <section class="story-card" id="section-express">
+    <div class="card-header">
+      <span class="step-icon">🚆</span>
+      <div>
+        <h2>The Career Express</h2>
+        <p class="subtitle">Every stop is a field these students actually chose. Every wagon shows how common that choice was for one anxiety group &mdash; its height is the share of that group, its colour is the anxiety level. Pull a lever to spotlight one anxiety group across every stop.</p>
+      </div>
+    </div>
+
+    <div class="vis-layout reverse">
+      <div class="interactive-panel lever-panel" id="lever-panel">
+        <h3>Anxiety Spotlight</h3>
+        <p class="panel-hint">Pull a lever to spotlight one anxiety level</p>
+        <div id="lever-track" class="lever-track"></div>
+        <div class="active-tag" id="route-tag">Spotlighting: every anxiety level</div>
+      </div>
+
+      <div class="canvas-wrap">
+        <div id="vis2-chart" class="chart-canvas train-canvas"></div>
+        <div class="legend-row" id="risk-legend"></div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="page-footer">
+    Data &middot; student survey (N = 3,156 across 4 academic years); 160 self-reported career paths grouped into 10 fields.
+  </footer>
+
+  <!-- ============================================================
+       BELOW: teammate's visualizations only (bubble chart,
+       distribution panel, outcomes panel) from the AI &
+       Automation's Impact on Employment dashboard — his title,
+       research-question banner, role note and footer text left out.
+       Wrapped in .td-dash for CSS scoping; .subtitle renamed to
+       .td-subtitle to avoid colliding with the .subtitle class used
+       above. Needs data.json in the same folder as this file.
+       ============================================================ -->
+<div class="page td-dash">
+
+  <section class="panel" id="panelRisk">
+    <div class="panel-head">
+      <h2>Where does automation risk meet future demand?</h2>
+      <p class="panel-desc">
+        Each bubble is one job title within one industry, from the 3,000-employee AI-impact survey.
+        Position shows average automation risk (left→right) against future demand (bottom→top);
+        size shows average salary. Drag a bubble to nudge it, hover for details, and
+        <strong>click a bubble to load its matched graduate-outcome profile below.</strong>
+        The companion Career Express (above) shows which of these fields Bangladeshi students
+        actually choose, broken down by how anxious they are about AI — this chart is the reality
+        check: does the field they're choosing actually hold up against global automation risk and
+        demand data?
+      </p>
+    </div>
+
+    <div class="controls">
+      <div class="control-group">
+        <label for="jobTitleFilter">Job title</label>
+        <select id="jobTitleFilter">
+          <option value="">All job titles</option>
+        </select>
+      </div>
+
+      <fieldset class="control-group">
+        <legend>Automation level</legend>
+        <label><input type="checkbox" class="autoLevel" value="Low" checked> Low</label>
+        <label><input type="checkbox" class="autoLevel" value="Medium" checked> Medium</label>
+        <label><input type="checkbox" class="autoLevel" value="High" checked> High</label>
+      </fieldset>
+
+      <fieldset class="control-group">
+        <legend>2026 hiring trend</legend>
+        <label><input type="checkbox" class="hireTrend" value="Growing" checked> Growing</label>
+        <label><input type="checkbox" class="hireTrend" value="Stable" checked> Stable</label>
+        <label><input type="checkbox" class="hireTrend" value="Declining" checked> Declining</label>
+      </fieldset>
+
+      <fieldset class="control-group">
+        <legend>Sound</legend>
+        <label><input type="checkbox" id="soundToggle" checked> Bubble click sound</label>
+      </fieldset>
+
+      <button id="resetFilters" class="btn-ghost">Reset filters</button>
+    </div>
+
+    <div class="chart-row">
+      <div class="chart-wrap">
+        <svg id="bubbleChart" viewBox="0 0 1080 720" preserveAspectRatio="xMidYMid meet"></svg>
+      </div>
+      <aside class="legend" id="industryLegend">
+        <button id="spotlightBtn" class="btn-spotlight">★ Show the most interesting case</button>
+        <div id="spotlightInfo" class="spotlight-info" hidden></div>
+        <p class="legend-title">Industry <span class="legend-hint">(click to isolate)</span></p>
+        <ul id="legendList"></ul>
+      </aside>
+    </div>
+  </section>
+
+  <section class="panel" id="panelDistribution">
+    <div class="panel-head">
+      <h2>How extreme is this data, really?</h2>
+      <p class="panel-desc" id="distributionDesc">Loading…</p>
+    </div>
+    <svg id="distributionChart" viewBox="0 0 1080 360" preserveAspectRatio="xMidYMid meet"></svg>
+  </section>
+
+  <section class="panel" id="panelOutcomes">
+    <div class="panel-head">
+      <h2 id="outcomesTitle">Matched graduate outcomes</h2>
+      <p class="panel-desc" id="outcomesDesc"></p>
+    </div>
+
+    <div class="outcomes-grid">
+
+      <div class="card card-trend">
+        <p class="card-label">Employment rate by graduation year</p>
+        <svg id="trendChart" viewBox="0 0 520 280" preserveAspectRatio="xMidYMid meet"></svg>
+        <div class="trend-key">
+          <span><i class="swatch solid"></i>12-month rate</span>
+          <span><i class="swatch dashed"></i>6-month rate</span>
+        </div>
+      </div>
+
+      <div class="card card-gauge">
+        <p class="card-label">Average employer reputation score</p>
+        <svg id="gaugeChart" viewBox="0 0 260 170" preserveAspectRatio="xMidYMid meet"></svg>
+      </div>
+
+      <div class="card card-salary">
+        <p class="card-label">Entry salary vs. current industry salary</p>
+        <div id="salaryCompare"></div>
+      </div>
+
+      <div class="card card-skills">
+        <p class="card-label">Employer-demanded skills — graduate curriculum vs. selected job</p>
+        <p class="card-sublabel">Skills marked <span class="star">★</span> appear in <em>both</em> the graduate skill data and this job's required-skills list — a rough skills-alignment signal.</p>
+        <svg id="skillsChart" viewBox="0 0 700 300" preserveAspectRatio="xMidYMid meet"></svg>
+      </div>
+
+    </div>
+  </section>
+
+</div>
+
+<div id="tooltip" class="tooltip" hidden></div>
+
+  <script src="d3.js"></script>
+</body>
+</html>
